@@ -1,12 +1,10 @@
 import React, { FunctionComponent, useEffect, useState, useContext } from "react";
 import { useParams } from 'react-router-dom';
-import { ApartmentStore } from '../../store/apartmentStore';
+import { LandStore } from '../../store/landStore';
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import ApartmentIcon from '@material-ui/icons/Apartment';
@@ -84,19 +82,12 @@ type FormData = {
 const defaultFormValues = {
     transactionType: ""
 }
-
-type ApartmentFormProps = {
-    handleForm: any;
-    loading: boolean;
-}
-
 const schema = yup.object().shape({
     title: yup.string().required("Este nevoie de un titlu")
 });
 
-const ApartmentForm: FunctionComponent<any> = () => {
+const LandForm: FunctionComponent<any> = () => {
 
-    const floorsCount = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const formHookValues = {
         title: "",
         description: "",
@@ -105,13 +96,12 @@ const ApartmentForm: FunctionComponent<any> = () => {
         transactionType: "",
         rooms: "",
         buildingType: "",
-        partitioning: "",
-        floor: "",
         comfort: "",
         usableArea: "",
         totalUsableArea: "",
         constructionYear: "",
-        structure: ""
+        structure: "",
+        isFeatured:""
     }
     const classes = useStyles();
     //@ts-ignore
@@ -119,8 +109,8 @@ const ApartmentForm: FunctionComponent<any> = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     //@ts-ignore
-    const { getApartmentInfo, onSub, handleGeneralUtilities, handleAmenities, setPropertyCoords, apartmentProperties, setUploadedImages, isModify, handleRemove } = useContext(ApartmentStore);
-    const { uploadedImages } = apartmentProperties;
+    const { getPropertyInfo, onSub, setPropertyCoords, landProperties, setUploadedImages, isModify, handleRemove } = useContext(LandStore);
+    const { uploadedImages } = landProperties;
     const {
         handleSubmit,
         register,
@@ -132,7 +122,7 @@ const ApartmentForm: FunctionComponent<any> = () => {
         //TODO fill checkboxes on modify
         if (isModify && shortId) {
             setIsLoading(true);
-            getApartmentInfo(shortId)
+            getPropertyInfo(shortId)
                 .then((apartmentData: any) => {
                     Object.keys(formHookValues).forEach(value => {
                         setValue(value, apartmentData[value])
@@ -148,19 +138,6 @@ const ApartmentForm: FunctionComponent<any> = () => {
     }, []);
 
 
-    const generateYears = () => {
-        let max = 2020;
-        let min = max - 80;
-
-        let years = [];
-
-        for (let i = max; i >= min; i--) {
-            years.push(i);
-        }
-
-        return years;
-    };
-
     const getMapCoords = (latLng: any) => {
         setPropertyCoords(latLng);
     };
@@ -173,7 +150,7 @@ const ApartmentForm: FunctionComponent<any> = () => {
                         <ApartmentIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Adauga apartament
+                        Adauga Teren
                 </Typography>
                     <Paper className={classes.paper}>
                         <form
@@ -213,36 +190,7 @@ const ApartmentForm: FunctionComponent<any> = () => {
                                 <Grid item xs={12}>
                                     <Typography color="primary">Caracteristici: </Typography>
                                     <Grid container spacing={3}>
-                                        <Grid item xs={6}>
-                                            <label id={`select-`}>Numar camere: </label>
-                                            <select {...register("rooms")} className="form-control" placeholder={"Numar camere: "}>
-                                                {[{ value: 1, text: "1" }, { value: 2, text: "2" }, { value: 3, text: "3" }, { value: 4, text: "4+" }].map(item => <option key={item.value} value={item.value}>{item.text}</option>)}
-                                            </select>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <label id={`select-`}>Tip Cladire: </label>
-                                            <select {...register("buildingType")} className="form-control" placeholder={"Tip Cladire: "}>
-                                                {[{ value: "bloc", text: "bloc" }].map(item => <option key={item.value} value={item.value}>{item.text}</option>)}
-                                            </select>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <label id={`select-`}>Partitionare: </label>
-                                            <select {...register("partitioning")} className="form-control" placeholder={"Partitionare: "}>
-                                                {[{ value: "decomandat", text: "decomandat" }, { value: "semi-decomandat", text: "semi-decomandat" }].map(item => <option key={item.value} value={item.value}>{item.text}</option>)}
-                                            </select>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <label id={`select-`}>Etaj: </label>
-                                            <select {...register("floor")} className="form-control" placeholder={"Etaj: "}>
-                                                {[...floorsCount.map(item => { return { value: item, text: String(item) } }), { value: 11, text: "11+" }].map(item => <option key={item.value} value={item.value}>{item.text}</option>)}
-                                            </select>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <label id={`select-`}>Confort: </label>
-                                            <select {...register("comfort")} className="form-control" placeholder={"Confort: "}>
-                                                {[{ value: "lux", text: "lux" }].map(item => <option key={item.value} value={item.value}>{item.text}</option>)}
-                                            </select>
-                                        </Grid>
+                                        
                                         <Grid item xs={6}>
                                             <label>Suprafata utila mp: </label>
                                             <input className={`form-control`} {...register("usableArea")} />
@@ -254,24 +202,6 @@ const ApartmentForm: FunctionComponent<any> = () => {
                                             <div className="invalid-feedback">{errors.totalUsableArea?.message}</div>
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <label id={`select-`}>An constructie: </label>
-                                            <select {...register("constructionYear")} className="form-control" placeholder={"An Constructie: "}>
-                                                {generateYears().map(year => { return { value: year, text: String(year) } }).map(item => <option key={item.value} value={item.value}>{item.text}</option>)}
-                                            </select>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <label id={`select-`}>Structura cladire: </label>
-                                            <select {...register("structure")} className="form-control" placeholder={"Structura Cladire: "}>
-                                                {[{ value: "beton", text: "beton" }].map(item => <option key={item.value} value={item.value}>{item.text}</option>)}
-                                            </select>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <label id={`select-`}>Inaltime cladire: </label>
-                                            <select {...register("buildingHeight")} className="form-control" placeholder={"Inaltime cladire: "}>
-                                                {[{ value: "S+P+4", text: "S+P+4" }].map(item => <option key={item.value} value={item.value}>{item.text}</option>)}
-                                            </select>
-                                        </Grid>
-                                        <Grid item xs={6}>
                                             <Typography>Apare pe landing page: </Typography>
                                             <p>Doar un numar de 6 proprietati pot fi afisate pe landing page: </p>
                                             <label className="form-check-label" htmlFor="isFeatured">Adauga proprietatea in homepage: </label>
@@ -279,39 +209,8 @@ const ApartmentForm: FunctionComponent<any> = () => {
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                {/*  */}
-                                <Grid item xs={12}>
-                                    <Grid container spacing={2}>
-                                        <Typography color="primary">Utilitati:</Typography>
-                                        <Grid item xs={6}>
-                                            <Typography>Generale: </Typography>
-
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleGeneralUtilities(e.target.value, "general") }} name="checkA" value="Curent" />} label="Curent" />
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleGeneralUtilities(e.target.value, "general") }} name="checkB" value="Apa" />} label="Apa" />
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleGeneralUtilities(e.target.value, "general") }} name="checkC" value="Canalizare" />} label="Canalizare" />
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <Typography>Sistem incalzire: </Typography>
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleGeneralUtilities(e.target.value, "heatingSystem") }} name="checkD" value="Centrala Proprie" />} label="Centrala Proprie" />
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleGeneralUtilities(e.target.value, "heatingSystem") }} name="checkE" value="Calorifer" />} label="Calorifer" />
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <Typography>Climatizare: </Typography>
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleGeneralUtilities(e.target.value, "conditioning") }} name="checkF" value="Aer Conditionat" />} label="Aer Conditionat" />
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container spacing={2}>
-                                        <Typography color="primary">Amenajari: </Typography>
-
-                                        <Grid item xs={6}>
-                                            <Typography >Cladire: </Typography>
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleAmenities(e.target.value, "building") }} name="checkG" value="Interfon" />} label="Interfon" />
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleAmenities(e.target.value, "building") }} name="checkH" value="Curte" />} label="Curte" />
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
                                 <Grid item xs={6}>
-                                    <LeafletMap getMapCoords={getMapCoords} propertyCoords={apartmentProperties.coords || null} />
+                                    <LeafletMap getMapCoords={getMapCoords} propertyCoords={landProperties.coords || null} />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <ImagesUpload uploadedImages={uploadedImages} setUploadedImages={setUploadedImages} />
@@ -335,4 +234,4 @@ const ApartmentForm: FunctionComponent<any> = () => {
     );
 }
 
-export default ApartmentForm;
+export default LandForm;

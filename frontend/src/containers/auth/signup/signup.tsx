@@ -10,7 +10,7 @@ export default function Signup() {
     const { postSignup } = useContext(AuthenticationStore);
 
     const handleForm = (form: object) => {
-        postSignup()
+        postSignup(form)
             .then(() => {
                 history.push("/login");
             })

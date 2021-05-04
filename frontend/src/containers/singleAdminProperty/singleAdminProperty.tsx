@@ -1,24 +1,25 @@
 import React from 'react';
 import ApartmentForm from '../../components/PropertiesForm/ApartmentForm';
+import HouseForm from '../../components/PropertiesForm/HouseForm';
+import LandForm from '../../components/PropertiesForm/LandForm';
 import { EPropertyTypes } from '../../interfaces/EPropertyTypes';
 
 
-type AddPropertiesPropType = {
-    propertyType: EPropertyTypes,
-    isModify: boolean
+type SingleAdminProperty = {
+    propertyType: EPropertyTypes
 }
 
-export default function AddProperties(props: AddPropertiesPropType) {
-    const { propertyType, isModify } = props;
+export default function SingleAdminProperty(props: SingleAdminProperty) {
+    const { propertyType } = props;
 
     const renderForm = () => {
         switch (propertyType) {
             case (EPropertyTypes.APARTMENT):
-                return <ApartmentForm isModify={isModify} />;
+                return <ApartmentForm />;
             case (EPropertyTypes.HOUSE):
-                return <div>Casa</div>;
+                return <HouseForm />;
             case (EPropertyTypes.LANDANDCOMMERCIAL):
-                return <div>Teren</div>;
+                return <LandForm />;
 
         }
     };

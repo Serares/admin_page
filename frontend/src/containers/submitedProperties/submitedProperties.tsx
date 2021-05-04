@@ -106,9 +106,11 @@ export default function SubmitedProperties() {
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
+                      Titlu:
                       {property.title}
                     </Typography>
                     <Typography>
+                      Adresa:
                       {property.address}
                     </Typography>
                   </CardContent>

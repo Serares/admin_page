@@ -33,7 +33,7 @@ export default function MapComponent(props: any) {
         <div className={classes.MapStyle}>
             {/* <input type="hidden" name="location_coordonates" value={createLocationValue()} /> */}
             {/* @ts-ignore */}
-            <MapContainer center={defaultPosition} zoom={13}>
+            <MapContainer center={propertyCoords || defaultPosition} zoom={13}>
                 <TileLayer
                     // @ts-ignore
                     attribution='Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
