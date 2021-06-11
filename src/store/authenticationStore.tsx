@@ -29,13 +29,23 @@ const AuthenticationProvider = ({ children }) => {
         })
     }
 
+    function deleteToken(): Promise<boolean> {
+        return new Promise((resolve) => {
+            if (window.localStorage.getItem("adminToken")) {
+                window.localStorage.removeItem("adminToken");
+                resolve(true);
+            }
+            resolve(false);
+        })
+    }
 
     const state = {
     };
 
     const actions = {
         postLogin,
-        postSignup
+        postSignup,
+        deleteToken
     };
 
     return (<Provider value={{ ...state, ...actions }}>{children}</Provider>)

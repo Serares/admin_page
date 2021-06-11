@@ -5,11 +5,11 @@ import LandForm from '../../components/PropertiesForm/LandForm';
 import { EPropertyTypes } from '../../interfaces/EPropertyTypes';
 
 
-type SingleAdminProperty = {
+type SingleAdminPropertyType = {
     propertyType: EPropertyTypes
 }
 
-export default function SingleAdminProperty(props: SingleAdminProperty) {
+export default function SingleAdminProperty(props: SingleAdminPropertyType) {
     const { propertyType } = props;
 
     const renderForm = () => {

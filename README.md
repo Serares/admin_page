@@ -1,1 +1,1 @@
-Admin platform
+Frontend app for undertown admin

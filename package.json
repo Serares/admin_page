@@ -4,13 +4,58 @@
   "description": "nodejs admin server",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start-react": "react-scripts start",
+    "build-react": "react-scripts build",
+    "test-react": "react-scripts test",
+    "eject": "react-scripts eject",
+    "test-node": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "gcp-build": "npm run build-react"
   },
   "author": "RJ",
   "license": "MIT",
   "dependencies": {
+    "@hookform/resolvers": "^2.4.0",
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@testing-library/jest-dom": "^5.11.10",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.21.1",
+    "clsx": "^1.1.1",
     "express": "^4.17.1",
-    "serve-static": "^1.14.1"
+    "leaflet": "^1.7.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-hook-form": "^7.1.0",
+    "react-leaflet": "^3.1.0",
+    "react-responsive-carousel": "^3.2.18",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "serve-static": "^1.14.1",
+    "web-vitals": "^1.1.1",
+    "yup": "^0.32.9"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/leaflet": "^1.7.0",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "@types/react-router-dom": "^5.1.7",
+    "node-sass": "^5.0.0",
+    "typescript": "^4.2.4"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

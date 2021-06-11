@@ -1,0 +1,9 @@
+.CarouselContainer {
+    margin:auto;
+}
+
+@media only screen and (min-width: 800px) {
+    .CarouselContainer {
+        max-width: 80vh;
+    }
+}

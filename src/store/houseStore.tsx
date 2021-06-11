@@ -114,16 +114,22 @@ const HouseProvider = ({ children, isModify }) => {
 
             Object.entries(houseProperties.utilities).forEach((value) => {
                 //@ts-ignore
-                value[1].forEach(utility => {
-                    formData.append(value[0], utility);
-                })
+                if (typeof value[1] === "object" && value[1].length > 0) {
+                    //@ts-ignore
+                    value[1].forEach(utility => {
+                        formData.append(value[0], utility);
+                    })
+                }
             });
 
             Object.entries(houseProperties.amenities).forEach((value) => {
                 //@ts-ignore
-                value[1].forEach(utility => {
-                    formData.append(value[0], utility);
-                })
+                if (typeof value[1] === "object" && value[1].length > 0) {
+                    //@ts-ignore
+                    value[1].forEach(utility => {
+                        formData.append(value[0], utility);
+                    })
+                }
             });
 
             // send as array of lng lat

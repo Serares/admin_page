@@ -66,29 +66,33 @@ export default function Routes() {
     </React.Fragment>
   );
 
-  const authRouts = [
+  const authRoutes = [
     <Route key="/" path="/" exact component={Login} />,
-    <Route key="login" path="/login" exact component={() => { return <AuthenticationProvider><Login /></AuthenticationProvider> }} />,
-    <Route key="signup" path="/signup" exact component={() => { return <AuthenticationProvider><Signup /></AuthenticationProvider> }} />
+    <Route key="login" path="/login" exact component={() => { return <Login /> }} />,
+    <Route key="signup" path="/signup" exact component={() => { return <Signup /> }} />
   ];
 
   const viewAdminPropertiesRoutes = [
     <Route
+      key="/prop"
       path="/dashboard/properties"
       exact
       component={AdminProperties}
     />,
     <Route
+      key="/prop/apart"
       path="/dashboard/properties/apartment/:shortId"
       exact
       component={() => { return <ApartmentProvider isModify={true}><SingleAdminProperty propertyType={EPropertyTypes.APARTMENT} /></ApartmentProvider> }}
     />,
     <Route
+      key="/prop/house"
       path="/dashboard/properties/house/:shortId"
       exact
       component={() => { return <HouseProvider isModify={true}><SingleAdminProperty propertyType={EPropertyTypes.HOUSE} /></HouseProvider> }}
     />,
     <Route
+      key="/prop/land"
       path="/dashboard/properties/land/:shortId"
       exact
       component={() => { return <LandProvider isModify={true}><SingleAdminProperty propertyType={EPropertyTypes.LANDANDCOMMERCIAL} /></LandProvider> }}
@@ -99,28 +103,30 @@ export default function Routes() {
     <Router>
       <MainLayout>
         <GlobalProvider>
-          <Switch>
-            {authRouts}
-            <Route
-              path="/dashboard"
-              exact={false}
-              component={() => {
-                //TODO remove '!'
-                if (isTokenValid()) {
-                  return (
-                    <Switch>
-                      <Dashboard>
-                        {submitedPropertiesRoutes}
-                        {addPropertiesRoutes}
-                        {viewAdminPropertiesRoutes}
-                      </Dashboard>
-                    </Switch>
-                  );
-                }
-                return <Redirect to="/login" />;
-              }}
-            />
-          </Switch>
+          <AuthenticationProvider>
+            <Switch>
+              {!isTokenValid() && authRoutes}
+              <Route
+                path="/dashboard"
+                exact={false}
+                component={() => {
+                  if (isTokenValid()) {
+                    return (
+                      <Switch>
+                        <Dashboard>
+                          {submitedPropertiesRoutes}
+                          {addPropertiesRoutes}
+                          {viewAdminPropertiesRoutes}
+                        </Dashboard>
+                      </Switch>
+                    );
+                  }
+                  return <Redirect to="/login" />;
+                }}
+              />
+              {isTokenValid() && <Redirect to="/dashboard" />}
+            </Switch>
+          </AuthenticationProvider>
         </GlobalProvider>
         <SnackBar />
       </MainLayout>

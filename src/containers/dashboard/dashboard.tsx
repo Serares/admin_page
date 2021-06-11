@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import clsx from 'clsx';
+
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -13,17 +15,20 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
+import { Container, Box, Grid, Paper } from '@material-ui/core'
 /**ICONS */
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
+import { AuthenticationStore } from '../../store/authenticationStore';
+
 
 const drawerWidth = 240;
 
@@ -66,7 +71,20 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     acordion: {
       flexDirection: "column"
-    }
+    },
+    paper: {
+      padding: theme.spacing(2),
+      display: 'flex',
+      overflow: 'auto',
+      flexDirection: 'column',
+    },
+    fixedHeight: {
+      height: 240,
+    },
+    container: {
+      paddingTop: theme.spacing(4),
+      paddingBottom: theme.spacing(4),
+    },
   }),
 );
 
@@ -86,6 +104,11 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
+  const location = useLocation();
+  const isDashboardUrl = location.pathname === "/dashboard";
+  //@ts-ignore
+  const { deleteToken } = useContext(AuthenticationStore);
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -99,7 +122,14 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   };
 
   const handleLogout = () => {
-    alert("TODO handle logout")
+    deleteToken()
+      .then((bool: boolean) => {
+        if (bool) {
+          history.push("/login")
+        } else {
+          alert("You are not logged in")
+        }
+      })
   }
 
   const addPropertiesTab = (
@@ -164,6 +194,33 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     </div>
   );
 
+  const dashboardContent = () => {
+    return (
+      <Container maxWidth="lg" className={classes.container}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={8} lg={9}>
+              {/* bar chart */}
+              <Paper className={fixedHeightPaper}>
+                Sal
+              </Paper>
+            </Grid>
+            {/* users pie chart */}
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper className={fixedHeightPaper}>
+              </Paper>
+            </Grid>
+            {/* recent actions */}
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+              </Paper>
+            </Grid>
+          </Grid>
+          <Box pt={4}>
+          </Box>
+        </Container>
+    )
+  };
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -220,6 +277,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         {children && children}
+        {isDashboardUrl && dashboardContent()}
       </main>
     </div>
   );
