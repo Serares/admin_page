@@ -44,12 +44,12 @@ export default function ImagesUpload(props: any) {
     function upload(formData: FormData) {
         const photos = formData.getAll('images');
         const promises = photos.map((file: any) => getImage(file)
-            .then((base64Image) => {
+            .then((image) => {
                 return {
                     id: Date.now(),
                     originalName: file.name,
                     fileName: file.name,
-                    url: base64Image,
+                    url: image.src,
                     type: file.type
                 }
             }));
@@ -65,26 +65,13 @@ export default function ImagesUpload(props: any) {
             fReader.onload = () => {
                 //@ts-ignore
                 img.src = fReader.result;
-                resolve(getBase64Image(img));
+                resolve(img);
             }
 
             fReader.readAsDataURL(file);
         })
     };
 
-    function getBase64Image(img: HTMLImageElement) {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-
-        const ctx = canvas.getContext('2d');
-        //@ts-ignore
-        ctx.drawImage(img, 0, 0);
-
-        const dataURL = canvas.toDataURL('image/png');
-
-        return dataURL;
-    };
     const saveImages = (formData: FormData) => {
         upload(formData)
             .then(imageObject => {
