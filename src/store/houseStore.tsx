@@ -22,7 +22,8 @@ const HouseProvider = ({ children, isModify }) => {
         utilities: initialUtilitiesValues,
         amenities: initialAmenities,
         coords: null,
-        uploadedImages: []
+        uploadedImages: [],
+        deletedImages: [] // deleted images for backend
     }
     const [houseProperties, setHouseValues] = useState<any>(initialPropertyValues);
     //@ts-ignore
@@ -34,6 +35,27 @@ const HouseProvider = ({ children, isModify }) => {
             ...houseProperties,
             uploadedImages: newImages
         })
+    };
+
+    function deleteImages(imageUrl: string) {
+        let newImages = houseProperties.uploadedImages.filter((image: any) => {
+            let deleteId = image.id || image
+            return deleteId !== imageUrl;
+        });
+        if (isModify) {
+            let deletedImages = houseProperties.deletedImages ? houseProperties.deletedImages.slice() : [];
+            deletedImages.push(imageUrl);
+            setHouseValues({
+                ...houseProperties,
+                deletedImages,
+                uploadedImages: newImages
+            })
+        } else {
+            setHouseValues({
+                ...houseProperties,
+                uploadedImages: newImages
+            })
+        }
     };
 
     function setPropertyCoords(latLng: any) {
@@ -208,7 +230,8 @@ const HouseProvider = ({ children, isModify }) => {
         handleAmenities,
         setPropertyCoords,
         getPropertyInfo,
-        handleRemove
+        handleRemove,
+        deleteImages
     }
 
     return (<Provider value={{ ...state, ...actions }}>{children}</Provider>)

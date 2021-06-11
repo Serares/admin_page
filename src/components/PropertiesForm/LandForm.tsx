@@ -101,7 +101,7 @@ const LandForm: FunctionComponent<any> = () => {
         totalUsableArea: "",
         constructionYear: "",
         structure: "",
-        isFeatured:""
+        isFeatured: ""
     }
     const classes = useStyles();
     //@ts-ignore
@@ -109,7 +109,7 @@ const LandForm: FunctionComponent<any> = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     //@ts-ignore
-    const { getPropertyInfo, onSub, setPropertyCoords, landProperties, setUploadedImages, isModify, handleRemove } = useContext(LandStore);
+    const { getPropertyInfo, onSub, setPropertyCoords, landProperties, setUploadedImages, deletedImages, isModify, handleRemove } = useContext(LandStore);
     const { uploadedImages } = landProperties;
     const {
         handleSubmit,
@@ -190,7 +190,7 @@ const LandForm: FunctionComponent<any> = () => {
                                 <Grid item xs={12}>
                                     <Typography color="primary">Caracteristici: </Typography>
                                     <Grid container spacing={3}>
-                                        
+
                                         <Grid item xs={6}>
                                             <label>Suprafata utila mp: </label>
                                             <input className={`form-control`} {...register("usableArea")} />
@@ -213,7 +213,7 @@ const LandForm: FunctionComponent<any> = () => {
                                     <LeafletMap getMapCoords={getMapCoords} propertyCoords={landProperties.coords || null} />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <ImagesUpload uploadedImages={uploadedImages} setUploadedImages={setUploadedImages} />
+                                    <ImagesUpload deleteImages={deletedImages} uploadedImages={uploadedImages} setUploadedImages={setUploadedImages} />
                                 </Grid>
                             </Grid>
                             <Grid item xs={6}>

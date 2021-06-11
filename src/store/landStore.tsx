@@ -27,6 +27,27 @@ const LandProvider = ({ children, isModify }) => {
         })
     };
 
+    function deleteImages(imageUrl: string) {
+        let newImages = landProperties.uploadedImages.filter((image: any) => {
+            let deleteId = image.id || image
+            return deleteId !== imageUrl;
+        });
+        if (isModify) {
+            let deletedImages = landProperties.deletedImages ? landProperties.deletedImages.slice() : [];
+            deletedImages.push(imageUrl);
+            setLandProperties({
+                ...landProperties,
+                deletedImages,
+                uploadedImages: newImages
+            })
+        } else {
+            setLandProperties({
+                ...landProperties,
+                uploadedImages: newImages
+            })
+        }
+    };
+
     function setPropertyCoords(latLng: any) {
         setLandProperties({
             ...landProperties,
@@ -137,7 +158,8 @@ const LandProvider = ({ children, isModify }) => {
         onSub,
         setPropertyCoords,
         getPropertyInfo,
-        handleRemove
+        handleRemove,
+        deleteImages
     }
 
     return (<Provider value={{ ...state, ...actions }}>{children}</Provider>)

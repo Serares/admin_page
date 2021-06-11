@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Grid } from '@material-ui/core';
 import classes from './index.module.css';
 import { BASE_IMAGE_URL } from '../../utils/environment';
 
-export default function ImagesUpload(props: any) {
+type ImagesUploadProps = {
+    deleteImages: Function,
+    uploadedImages: Array<string | {}>,
+    setUploadedImages: Function
+}
+
+const ImagesUpload: FunctionComponent<ImagesUploadProps> = (props: any) => {
     const [isSaving, setIsSaving] = useState(false);
     const [isInitial, setIsInitial] = useState(true);
     const [errors, setErrors] = useState<Array<string>>([]);
-    const { setUploadedImages, uploadedImages } = props;
+    const { setUploadedImages, uploadedImages, deleteImages } = props;
     // in mb
     const maxFileSize = 5;
     const fileTypes = [
@@ -117,12 +123,13 @@ export default function ImagesUpload(props: any) {
 
     const handleDeleteImage = (imageId: string) => {
         // first filter out the image from this.uploadedFiles
-        setUploadedImages(uploadedImages.filter((value: any) => { return value.id !== imageId }));
+        deleteImages(imageId);
     };
 
     const renderThumbnails = () => {
         return uploadedImages.map((item: any) => {
-            return <img className={`img-thumbnail ${classes.Thumbnail}`} src={item.url || `${BASE_IMAGE_URL(item)}`} alt={item.originalName} key={item.originalName} onClick={() => { handleDeleteImage(item.id) }} />
+            let itemId = item.id || item;
+            return <img className={`img-thumbnail ${classes.Thumbnail}`} src={item.url || `${BASE_IMAGE_URL(item)}`} alt={item.originalName} key={item.originalName || item} onClick={() => { handleDeleteImage(itemId) }} />
         })
     };
 
@@ -146,3 +153,5 @@ export default function ImagesUpload(props: any) {
         </div>
     )
 }
+
+export default ImagesUpload

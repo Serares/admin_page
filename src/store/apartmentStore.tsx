@@ -14,7 +14,7 @@ type ApartmentPropertiesType = {
         conditioning: []
     }
 };
-
+// TODO try to get rid of all the repeating parts
 //@ts-ignore
 const ApartmentProvider = ({ children, isModify }) => {
     const history = useHistory();
@@ -31,7 +31,8 @@ const ApartmentProvider = ({ children, isModify }) => {
         utilities: initialUtilitiesValues,
         amenities: initialAmenities,
         coords: null,
-        uploadedImages: []
+        uploadedImages: [],
+        deletedImages: []
     }
     const [apartmentProperties, setApartmentProperties] = useState<any>(initialPropertyValues);
     //@ts-ignore
@@ -50,6 +51,27 @@ const ApartmentProvider = ({ children, isModify }) => {
             ...apartmentProperties,
             coords: JSON.parse(JSON.stringify(latLng))
         })
+    };
+
+    function deleteImages(imageUrl: string) {
+        let newImages = apartmentProperties.uploadedImages.filter((image: any) => {
+            let deleteId = image.id || image
+            return deleteId !== imageUrl;
+        });
+        if (isModify) {
+            let deletedImages = apartmentProperties.deletedImages ? apartmentProperties.deletedImages.slice() : [];
+            deletedImages.push(imageUrl);
+            setApartmentProperties({
+                ...apartmentProperties,
+                deletedImages,
+                uploadedImages: newImages
+            })
+        } else {
+            setApartmentProperties({
+                ...apartmentProperties,
+                uploadedImages: newImages
+            })
+        }
     };
 
     async function onSub(form: object) {
@@ -218,7 +240,8 @@ const ApartmentProvider = ({ children, isModify }) => {
         handleAmenities,
         setPropertyCoords,
         getApartmentInfo,
-        handleRemove
+        handleRemove,
+        deleteImages
     };
 
     return (<Provider value={{ ...state, ...actions }}>{children}</Provider>)

@@ -13,6 +13,8 @@ import Container from '@material-ui/core/Container';
 import { BASE_IMAGE_URL } from '../../utils/environment';
 import PropertiesServiece from '../../services/Properties';
 import { EPropertyTypes } from '../../interfaces/EPropertyTypes';
+import propertyTypeValues from '../../utils/propertyTypeValues';
+import transactionTypeValues from '../../utils/transactionTypeValues';
 
 const useStyles = makeStyles((theme) => ({
     icon: {
@@ -47,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 //@ts-ignore
-export default function GetAdminProperties() {
+export default function AllAdminProperties() {
     const classes = useStyles();
     const history = useHistory();
     const { url } = useRouteMatch();
@@ -116,6 +118,14 @@ export default function GetAdminProperties() {
                                         <Typography>
                                             Adresa:
                                             {property.address}
+                                        </Typography>
+                                        <Typography>
+                                            Tipul proprietatii:
+                                            {propertyTypeValues(property.propertyType)}
+                                        </Typography>
+                                        <Typography>
+                                            Tipul tranzactiei:
+                                            {transactionTypeValues(property.transactionType)}
                                         </Typography>
                                     </CardContent>
                                     <CardActions>

@@ -108,7 +108,7 @@ const HouseForm: FunctionComponent<any> = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     //@ts-ignore
-    const { getPropertyInfo, onSub, handleGeneralUtilities, handleAmenities, setPropertyCoords, houseProperties, setUploadedImages, isModify, handleRemove } = useContext(HouseStore);
+    const { getPropertyInfo, onSub, handleGeneralUtilities, handleAmenities, setPropertyCoords, houseProperties,deletedImages, setUploadedImages, isModify, handleRemove } = useContext(HouseStore);
     const { uploadedImages } = houseProperties;
     const {
         handleSubmit,
@@ -285,7 +285,7 @@ const HouseForm: FunctionComponent<any> = () => {
                                     <LeafletMap getMapCoords={getMapCoords} propertyCoords={houseProperties.coords || null} />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <ImagesUpload uploadedImages={uploadedImages} setUploadedImages={setUploadedImages} />
+                                    <ImagesUpload deleteImages={deletedImages} uploadedImages={uploadedImages} setUploadedImages={setUploadedImages} />
                                 </Grid>
                             </Grid>
                             <Grid item xs={6}>

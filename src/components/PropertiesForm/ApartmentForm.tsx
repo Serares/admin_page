@@ -119,7 +119,7 @@ const ApartmentForm: FunctionComponent<any> = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     //@ts-ignore
-    const { getApartmentInfo, onSub, handleGeneralUtilities, handleAmenities, setPropertyCoords, apartmentProperties, setUploadedImages, isModify, handleRemove } = useContext(ApartmentStore);
+    const { getApartmentInfo, onSub, handleGeneralUtilities, handleAmenities, setPropertyCoords, apartmentProperties, setUploadedImages, deleteImages,isModify, handleRemove } = useContext(ApartmentStore);
     const { uploadedImages } = apartmentProperties;
     const {
         handleSubmit,
@@ -314,7 +314,7 @@ const ApartmentForm: FunctionComponent<any> = () => {
                                     <LeafletMap getMapCoords={getMapCoords} propertyCoords={apartmentProperties.coords || null} />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <ImagesUpload uploadedImages={uploadedImages} setUploadedImages={setUploadedImages} />
+                                    <ImagesUpload uploadedImages={uploadedImages} setUploadedImages={setUploadedImages} deleteImages={deleteImages} />
                                 </Grid>
                             </Grid>
                             <Grid item xs={6}>

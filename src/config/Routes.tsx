@@ -15,7 +15,7 @@ import { LandProvider } from '../store/landStore';
 //containers, components
 import Dashboard from "../containers/dashboard/dashboard";
 import SubmitedProperties from '../containers/submitedProperties/submitedProperties';
-import AdminProperties from '../containers/getAdminProperties/getAdminProperties';
+import AdminProperties from '../containers/AllAdminProperties/AllAdminProperties';
 import MainLayout from "../MainLayout/mainLayout";
 import SnackBar from "../components/SnackBar/SnackBar";
 import Login from "../containers/auth/login/login";
