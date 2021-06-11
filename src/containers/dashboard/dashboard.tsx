@@ -28,7 +28,9 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import { AuthenticationStore } from '../../store/authenticationStore';
-
+import ActivityTable from '../../components/ActivityTable/ActivityTable';
+import UsersPieChart from '../../components/UsersPieChart/UsersPieChart';
+import PropertiesBarChart from '../../components/PropertiesBarChart/PropertiesBarChart';
 
 const drawerWidth = 240;
 
@@ -197,27 +199,28 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   const dashboardContent = () => {
     return (
       <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={8} lg={9}>
-              {/* bar chart */}
-              <Paper className={fixedHeightPaper}>
-                Sal
-              </Paper>
-            </Grid>
-            {/* users pie chart */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-              </Paper>
-            </Grid>
-            {/* recent actions */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-              </Paper>
-            </Grid>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={8} lg={9}>
+            {/* bar chart */}
+            <Paper >
+              <PropertiesBarChart />
+            </Paper>
           </Grid>
-          <Box pt={4}>
-          </Box>
-        </Container>
+          {/* users pie chart */}
+          <Grid item xs={12} md={4} lg={3}>
+            <Paper >
+              <UsersPieChart adminUsers={2} basicUsers={1} />
+            </Paper>
+          </Grid>
+          {/* recent actions */}
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>
+            </Paper>
+          </Grid>
+        </Grid>
+        <Box pt={4}>
+        </Box>
+      </Container>
     )
   };
 
