@@ -123,12 +123,18 @@ const HouseProvider = ({ children, isModify }) => {
             const formData = new FormData();
             houseProperties.uploadedImages.forEach(async (file: any) => {
                 if (typeof file.url !== "undefined" && file.url.indexOf("data") > -1) {
-                    let base64Content = file.url.replace(/^data:image\/(png|jpg);base64,/, "");
+                    let base64Content = file.url.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
                     formData.append("images", await base64toblob(base64Content, file.type))
                 } else {
                     formData.append("images", file);
                 }
             });
+
+            if (houseProperties.deletedImages && houseProperties.deletedImages.length > 0) {
+                houseProperties.deletedImages.forEach((img: string) => {
+                    formData.append("deletedImages", img);
+                })
+            }
 
             Object.entries(formFields).forEach((value: any) => {
                 formData.append(value[0], value[1] || "");

@@ -7,17 +7,17 @@ const ApartmentStore = React.createContext({});
 const { Provider } = ApartmentStore;
 
 type ApartmentPropertiesType = {
+    [key: string]: any, // acts as a wildcard to not get compile errors lol
     uploadedImages: Array<string>,
-    initialUtilitiesValues: {
-        general: [],
-        heatingSystem: [],
-        conditioning: []
-    }
+    deletedImages: Array<string>,
+    coords: null | string
 };
 // TODO try to get rid of all the repeating parts
 //@ts-ignore
 const ApartmentProvider = ({ children, isModify }) => {
     const history = useHistory();
+    // @ts-ignore
+    const { shortId } = useParams();
     const initialUtilitiesValues = {
         general: [],
         heatingSystem: [],
@@ -34,9 +34,7 @@ const ApartmentProvider = ({ children, isModify }) => {
         uploadedImages: [],
         deletedImages: []
     }
-    const [apartmentProperties, setApartmentProperties] = useState<any>(initialPropertyValues);
-    //@ts-ignore
-    const { shortId } = useParams();
+    const [apartmentProperties, setApartmentProperties] = useState<ApartmentPropertiesType>(initialPropertyValues);
 
     function setUploadedImages(images: Array<string>) {
         const newImages = [...images];
@@ -136,9 +134,16 @@ const ApartmentProvider = ({ children, isModify }) => {
                         let base64Content = file.url.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
                         formData.append("images", await base64toblob(base64Content, file.type))
                     } else {
+                        // those are urls from gcs
                         formData.append("images", file);
                     }
                 });
+
+                if (apartmentProperties.deletedImages && apartmentProperties.deletedImages.length > 0) {
+                    apartmentProperties.deletedImages.forEach((img) => {
+                        formData.append("deletedImages", img);
+                    })
+                };
 
                 Object.entries(apartmentFields).forEach((value: any) => {
                     formData.append(value[0], value[1] || "");

@@ -16,6 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import LeafletMap from '../../components/Map/Map';
 import ImagesUpload from "../ImagesUpload/ImagesUpload";
+import { isChecked } from "../../utils/isChecked";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -256,19 +257,19 @@ const HouseForm: FunctionComponent<any> = () => {
                                         <Typography color="primary">Utilitati:</Typography>
                                         <Grid item xs={6}>
                                             <Typography>Generale: </Typography>
-
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleGeneralUtilities(e.target.value, "general") }} name="checkA" value="Curent" />} label="Curent" />
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleGeneralUtilities(e.target.value, "general") }} name="checkB" value="Apa" />} label="Apa" />
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleGeneralUtilities(e.target.value, "general") }} name="checkC" value="Canalizare" />} label="Canalizare" />
+                                            {/* TODO: bad solution to check the checkboxes */}
+                                            <FormControlLabel control={<Checkbox checked={isChecked(houseProperties.utilities.general, "Curent")} onChange={(e) => { handleGeneralUtilities(e.target.value, "general") }} name="checkA" value="Curent" />} label="Curent" />
+                                            <FormControlLabel control={<Checkbox checked={isChecked(houseProperties.utilities.general, "Apa")} onChange={(e) => { handleGeneralUtilities(e.target.value, "general") }} name="checkB" value="Apa" />} label="Apa" />
+                                            <FormControlLabel control={<Checkbox checked={isChecked(houseProperties.utilities.general, "Canalizare")} onChange={(e) => { handleGeneralUtilities(e.target.value, "general") }} name="checkC" value="Canalizare" />} label="Canalizare" />
                                         </Grid>
                                         <Grid item xs={6}>
                                             <Typography>Sistem incalzire: </Typography>
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleGeneralUtilities(e.target.value, "heatingSystem") }} name="checkD" value="Centrala Proprie" />} label="Centrala Proprie" />
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleGeneralUtilities(e.target.value, "heatingSystem") }} name="checkE" value="Calorifer" />} label="Calorifer" />
+                                            <FormControlLabel control={<Checkbox checked={isChecked(houseProperties.utilities.heatingSystem, "Centrala Proprie")} onChange={(e) => { handleGeneralUtilities(e.target.value, "heatingSystem") }} name="checkD" value="Centrala Proprie" />} label="Centrala Proprie" />
+                                            <FormControlLabel control={<Checkbox checked={isChecked(houseProperties.utilities.heatingSystem, "Calorifer")} onChange={(e) => { handleGeneralUtilities(e.target.value, "heatingSystem") }} name="checkE" value="Calorifer" />} label="Calorifer" />
                                         </Grid>
                                         <Grid item xs={6}>
                                             <Typography>Climatizare: </Typography>
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleGeneralUtilities(e.target.value, "conditioning") }} name="checkF" value="Aer Conditionat" />} label="Aer Conditionat" />
+                                            <FormControlLabel control={<Checkbox checked={isChecked(houseProperties.utilities.conditioning, "Aer Conditionat")} onChange={(e) => { handleGeneralUtilities(e.target.value, "conditioning") }} name="checkF" value="Aer Conditionat" />} label="Aer Conditionat" />
                                         </Grid>
                                     </Grid>
                                     <Grid container spacing={2}>
@@ -276,8 +277,8 @@ const HouseForm: FunctionComponent<any> = () => {
 
                                         <Grid item xs={6}>
                                             <Typography >Cladire: </Typography>
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleAmenities(e.target.value, "building") }} name="checkG" value="Interfon" />} label="Interfon" />
-                                            <FormControlLabel control={<Checkbox onChange={(e) => { handleAmenities(e.target.value, "building") }} name="checkH" value="Curte" />} label="Curte" />
+                                            <FormControlLabel control={<Checkbox checked={isChecked(houseProperties.amenities.building, "Interfon")} onChange={(e) => { handleAmenities(e.target.value, "building") }} name="checkG" value="Interfon" />} label="Interfon" />
+                                            <FormControlLabel control={<Checkbox checked={isChecked(houseProperties.amenities.building, "Curte")} onChange={(e) => { handleAmenities(e.target.value, "building") }} name="checkH" value="Curte" />} label="Curte" />
                                         </Grid>
                                     </Grid>
                                 </Grid>
