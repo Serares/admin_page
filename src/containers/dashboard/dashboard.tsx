@@ -63,8 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: drawerWidth,
     },
     content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
+      flexGrow: 1
     },
     header: {
       display: 'flex',

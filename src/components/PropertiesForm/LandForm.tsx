@@ -19,7 +19,6 @@ import ImagesUpload from "../ImagesUpload/ImagesUpload";
 
 const useStyles = makeStyles(theme => ({
     paper: {
-        width: "90%",
         marginTop: theme.spacing(3),
         marginBottom: theme.spacing(3),
         padding: theme.spacing(2),

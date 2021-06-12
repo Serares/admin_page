@@ -20,7 +20,6 @@ import { isChecked } from "../../utils/isChecked";
 
 const useStyles = makeStyles(theme => ({
     paper: {
-        width: "90%",
         marginTop: theme.spacing(3),
         marginBottom: theme.spacing(3),
         padding: theme.spacing(2),
@@ -101,7 +100,8 @@ const HouseForm: FunctionComponent<any> = () => {
         usableArea: "",
         totalUsableArea: "",
         constructionYear: "",
-        structure: ""
+        structure: "",
+        isFeatured: ""
     }
     const classes = useStyles();
     //@ts-ignore
